@@ -6,6 +6,21 @@ class SmartTarget {
     token.setTarget(!isTargeted, { releaseOthers: release });
   }
 
+  static getBorderColor({hover}={}) {
+    const colors = CONFIG.Canvas.dispositionColors;
+    if ( this.controlled ) return colors.CONTROLLED;
+    else if ( (hover ?? this.hover) || canvas.tokens._highlight ) {
+      let d = this.document.disposition;
+      if ( !game.user.isGM && this.isOwner ) return colors.CONTROLLED;
+      else if ( this.actor?.hasPlayerOwner ) return colors.PARTY;
+      else if ( d === CONST.TOKEN_DISPOSITIONS.FRIENDLY ) return colors.FRIENDLY;
+      else if ( d === CONST.TOKEN_DISPOSITIONS.NEUTRAL ) return colors.NEUTRAL;
+      else if ( d === CONST.TOKEN_DISPOSITIONS.HOSTILE ) return colors.HOSTILE;
+      else if ( d === CONST.TOKEN_DISPOSITIONS.SECRET ) return this.isOwner ? colors.SECRET : null;
+    }
+    return null;
+  }
+
   static _tokenOnClickLeft(wrapped, ...args) {
     const mode = SmartTarget.settings().mode;
     switch (mode) {
@@ -33,7 +48,7 @@ class SmartTarget {
   }
 
   static canvasOnClickLeft(wrapped, ...args) {
-    const canvasMousePos = args[0].data.origin
+    const canvasMousePos = args[0].interactionData.origin
     if (game.smartTarget.altModifier){
       let distance = Infinity
       let closestTemplate = null
@@ -143,8 +158,8 @@ class SmartTarget {
       token._refreshTarget()
     }
     let texture = u.isGM
-      ? new PIXI.Texture.from(gmTexture)
-      : new PIXI.Texture.from(pTex);
+      ? PIXI.Texture.from(gmTexture)
+      : PIXI.Texture.from(pTex);
     if (!texture.baseTexture.valid) texture.once("update", redraw);
     let newTexW = scaleMulti * (2 * circleR);
     let newTexH = scaleMulti * (2 * circleR);
@@ -180,6 +195,7 @@ class SmartTarget {
 
   // Draw custom crosshair and pips
   static async _refreshTarget(reticule = {}) {
+    if (!this.target) return;
     this.target.clear();
     if (!this.targeted.size) return;
 
@@ -198,7 +214,7 @@ class SmartTarget {
         ? game.settings
             .get(SMARTTARGET_MODULE_NAME, "crossairColor")
             .replace("#", "0x")
-        : this._getBorderColor({hover: true});
+        : SmartTarget.getBorderColor.bind(this)({hover: true});
 
       if (game.settings.get(SMARTTARGET_MODULE_NAME, "use-player-color")) {
         textColor = Color.from(game.user["color"]);
