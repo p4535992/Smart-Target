@@ -1,4 +1,7 @@
-const SMARTTARGET_MODULE_NAME = "smarttarget";
+import { managePlayerTargets } from "./manage-player-targets";
+import { SmartTarget } from "./smartTarget";
+
+export const SMARTTARGET_MODULE_NAME = "smart-target-variant";
 
 Hooks.on("init", () => {
   game.smartTarget = {
@@ -188,7 +191,7 @@ Hooks.on("init", () => {
     hint: game.i18n.localize("smarttarget.settings.target-indicator.hint"),
     scope: "client",
     config: true,
-    default: "0",
+    default: "5", // Better Target as default
     type: String,
     choices: {
       0: game.i18n.localize("smarttarget.settings.target-indicator-choices-0"),
@@ -249,6 +252,10 @@ Hooks.on("init", () => {
     ],
     onDown: () => {game.smartTarget.altModifier = true;},
     onUp: () => {game.smartTarget.altModifier = false;},
+});
+
+Hooks.once("ready", () => {
+  managePlayerTargets();
 });
 
 game.keybindings.register(SMARTTARGET_MODULE_NAME, "clearAllTargets", {

@@ -1,4 +1,6 @@
-class SmartTarget {
+import { drawBetterTarget, drawBullsEye1, drawBullsEye2, drawCrossHairs1, drawCrossHairs2, drawDefault } from "./helpers";
+
+export class SmartTarget {
 
   static handleTargeting(token,shift) {
     const isTargeted = token.isTargeted;

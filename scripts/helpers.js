@@ -1,4 +1,4 @@
-function drawDefault(token, fillColor, p, aw, h, hh, w, hw, ah) {
+export function drawDefault(token, fillColor, p, aw, h, hh, w, hw, ah) {
 
     token.target.beginFill(fillColor, 1.0)
     .lineStyle(1, 0x000000)
@@ -9,7 +9,7 @@ function drawDefault(token, fillColor, p, aw, h, hh, w, hw, ah) {
 
 }
 
-function drawCrossHairs1(token, fillColor, p, aw, h, hh, w, hw, ah) {
+export function drawCrossHairs1(token, fillColor, p, aw, h, hh, w, hw, ah) {
 let borderColor = 0x000000;
 let rw = 10; // rect width
 let rh = 30; // rect length
@@ -31,7 +31,7 @@ token.target
     .beginFill(fillColor).lineStyle(2, borderColor).drawRect(leftX, leftY, rh, rw).endFill(); // tleft bar
 }
 
-function drawCrossHairs2(token, fillColor, p, aw, h, hh, w, hw, ah) {
+export function drawCrossHairs2(token, fillColor, p, aw, h, hh, w, hw, ah) {
 let borderColor = 0x000000;
 let rw = 10; // rect width
 let rh = 50; // rect length
@@ -53,7 +53,7 @@ token.target
     .beginFill(fillColor).lineStyle(2, borderColor).drawRect(leftX, leftY, rh, rw).endFill(); // tleft bar
 }
 
-function drawBullsEye1(token, fillColor, p, aw, h, hh, w, hw, ah) {
+export function drawBullsEye1(token, fillColor, p, aw, h, hh, w, hw, ah) {
 let borderColor = 0x000000;
 token.target
     .beginFill(borderColor, 0).lineStyle(6, borderColor).drawCircle(hw, hh, hh).endFill()
@@ -62,7 +62,7 @@ token.target
     .beginFill(fillColor, 0).lineStyle(4, fillColor).drawCircle(hw, hh, hh - 40).endFill();
 }
 
-function drawBullsEye2(token, fillColor, p, aw, h, hh, w, hw, ah) {
+export function drawBullsEye2(token, fillColor, p, aw, h, hh, w, hw, ah) {
 let borderColor = 0x000000;
 token.target
     .beginFill(borderColor, 0).lineStyle(6, borderColor).drawCircle(hw, hh, hh).endFill()
@@ -73,7 +73,7 @@ token.target
 
 }
 
-function drawBetterTarget(token, fillColor, p, aw, h, hh, w, hw, ah) {
+export function drawBetterTarget(token, fillColor, p, aw, h, hh, w, hw, ah) {
 let size = token.w;
 // Constrain dimensions to the shortest axis
 if (size > token.h) {
